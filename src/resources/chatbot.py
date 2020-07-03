@@ -27,8 +27,7 @@ class ChatbotApi(Resource):
     
     @jwt_required
     def delete(self, id):
-        chatbots_id = get_jwt_identity()
-        chatbot = Chatbot.objects.get(id=id, added_by=chatbots_id)
+        chatbot = Chatbot.objects.get(id=id)
         chatbot.delete()
         return '', 200
 

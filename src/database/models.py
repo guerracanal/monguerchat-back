@@ -1,5 +1,6 @@
 from .db import db
 from flask_bcrypt import generate_password_hash, check_password_hash
+import datetime
 
 # class Movie(db.Document):
 #     name = db.StringField(required=True, unique=True)
@@ -31,9 +32,9 @@ class Conversation(db.Document):
     character = db.ReferenceField('Character')
 
 class Message(db.Document):
-    body = db.StringField(required=True)
-    time = db.DateTimeField(required=True)
-    conversation = db.ReferenceField('Conversation')
+    content = db.StringField(required=True)
+    time = db.DateTimeField(default=datetime.datetime.utcnow, required=True)
+    conversation = db.ReferenceField('Conversation', required=True)
     sender_character = db.BooleanField(required=True)
 
 class Chatbot(db.Document):
@@ -50,7 +51,7 @@ class Topic(db.Document):
     
 class Knowledge(db.Document):
     character = db.ReferenceField('Character')
-    body = db.StringField(required=True)
+    content = db.StringField(required=True)
     topic = db.ReferenceField('Topic')
 
 class Search(db.Document):

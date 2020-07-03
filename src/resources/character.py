@@ -1,7 +1,9 @@
 from flask import Response, request
 from database.models import Character
+from database.models import Chatbot
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
+from bson.objectid import ObjectId
 
 class CharactersApi(Resource):
     def get(self):
@@ -12,7 +14,11 @@ class CharactersApi(Resource):
     @jwt_required
     def post(self):
         body = request.get_json()
+        chatbot_id = str(body["chatbot"])
+        print(chatbot_id)
+        chatbot = Chatbot.objects.get(id=chatbot_id)
         character =  Character(**body)
+        character.chatbot = chatbot
         character.save()
         id = character.id
         return {'id': str(id)}, 200
@@ -28,8 +34,7 @@ class CharacterApi(Resource):
     
     @jwt_required
     def delete(self, id):
-        users_id = get_jwt_identity()
-        character = Character.objects.get(id=id, added_by=users_id)
+        character = Character.objects.get(id=id)
         character.delete()
         return '', 200
 
