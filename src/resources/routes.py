@@ -3,7 +3,7 @@ from .user import UsersApi, UserApi
 from .character import CharactersApi, CharacterApi
 from .chatbot import ChatbotsApi, ChatbotApi
 from .conversation import ConversationsApi, ConversationApi
-from .message import MessagesApi, MessageApi
+from .message import MessagesApi, MessageApi, RamdomMessageCharacter
 from .topic import TopicsApi, TopicApi
 from .knowledge import KnowledgesApi, KnowledgeApi
 
@@ -27,6 +27,7 @@ def initialize_routes(api):
 
     api.add_resource(MessagesApi, '/api/messages/<conversation_id>')
     api.add_resource(MessageApi, '/api/message/<id>')
+    api.add_resource(RamdomMessageCharacter, '/api/random_message/<conversation_id>')
 
     api.add_resource(TopicsApi, '/api/topics')
     api.add_resource(TopicApi, '/api/topic/<id>')

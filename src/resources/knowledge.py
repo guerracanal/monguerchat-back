@@ -6,7 +6,7 @@ from flask_restful import Resource
 class KnowledgesApi(Resource):
     def get(self, character_id, topic_id):
         query = Knowledge.objects()
-        knowledges = Knowledge.objects().to_json()
+        knowledges = Knowledge.objects(character=character_id).to_json()
         return Response(knowledges, mimetype="application/json", status=200)
 
     def post(self, character_id, topic_id):

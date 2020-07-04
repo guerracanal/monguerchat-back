@@ -1,7 +1,8 @@
 from flask import Response, request
-from database.models import Message, Conversation, User
+from database.models import Message, Conversation, User, Character, Knowledge
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
+import random
 
 class MessagesApi(Resource):
 
@@ -42,3 +43,26 @@ class MessageApi(Resource):
     def get(self, id):
         messages = Message.objects.get(id=id).to_json()
         return Response(messages, mimetype="application/json", status=200)
+
+class RamdomMessageCharacter(Resource):
+    
+    def post(self, conversation_id):
+        conversation = Conversation.objects.get(id=conversation_id)
+        query = Message.objects()
+        character = Character.objects.get(id=conversation.character.id)
+
+        query = Knowledge.objects()
+
+        knowledges = Knowledge.objects(character=conversation.character.id)
+
+        ramdom_message = []
+
+        for i in range(0,random.randint(1, 10)):
+            ramdom_message.append(knowledges[random.randrange(len(knowledges))].content+' ')
+
+        message =  Message()
+        message.content = ''.join(ramdom_message).strip()
+        message.conversation = conversation
+        message.sender_character = True
+        message.save()
+        return Response(message.to_json(), mimetype="application/json", status=200)
